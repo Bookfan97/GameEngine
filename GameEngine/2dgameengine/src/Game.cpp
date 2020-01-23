@@ -7,24 +7,24 @@ Game::Game()
   this->isRunning = false;
 }
 
-Game::~~Game()
+Game::~Game()
 {
 
 }
 
-bool Game::isRunning() const
+bool Game::IsRunning() const
 {
-  returns this->isRunning;
+  return this->isRunning;
 }
 
 float projectilePosX = 0.0f;
 float projectilePosY = 0.0f;
-float projectileVelX = 50.0f;
-float projectileVelY = 50.0f;
+float projectileVelX = 0.5f;
+float projectileVelY = 0.5f;
 
 void Game::Initialize(int width, int height)
 {
-  if(SDL_Init(SDL_INIT_EVERYTHING)!-0)
+  if(SDL_Init(SDL_INIT_EVERYTHING)!=0)
   {
       std::cerr <<"Error initializing SDL." <<std::endl;
       return;
@@ -50,4 +50,55 @@ void Game::Initialize(int width, int height)
   }
   isRunning = true;
   return;
+};
+
+void Game::ProcessInput()
+{
+  SDL_Event event;
+  SDL_PollEvent(&event);
+  switch(event.type)
+  {
+    case SDL_QUIT:
+    {
+      isRunning = false;
+      break;
+    }
+    case SDL_KEYDOWN:
+    {
+      if(event.key.keysym.sym == SDLK_ESCAPE)
+      {
+        isRunning = false;
+      }
+    }
+    default:
+    {
+      break;
+    }
+  }
+}
+void Game::Update()
+{
+  projectilePosX += projectileVelX;
+  projectilePosY += projectileVelY;
+}
+void Game::Render()
+{
+  SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
+  SDL_RenderClear(renderer);
+  SDL_Rect projectile {
+    (int) projectilePosX,
+    (int) projectilePosY,
+    10,
+    10
+  };
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+  SDL_RenderFillRect(renderer, &projectile);
+  SDL_RenderPresent(renderer);
+}
+
+void Game::Destroy()
+{
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+  SDL_Quit();
 }

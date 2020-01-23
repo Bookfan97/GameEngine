@@ -13,11 +13,11 @@ class Game
     Game();
     ~Game();
     bool IsRunning() const;
-    void initialize(int width, int height);
+    void Initialize(int width, int height);
     void ProcessInput();
     void Update();
     void Render();
     void Destroy();
-}
+};
 
 #endif
