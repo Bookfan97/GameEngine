@@ -33,10 +33,8 @@ class TransformComponent:public Component{
         width,
         height
       };
-      SDL_SetRenderDrawColor(Game:: renderer, 255, 255, 255, 255);
-      SDL_RenderFillRect(Game::Renderer, &transformRectangle);
-
-      )
+      SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
+      SDL_RenderFillRect(Game::renderer, &transformRectangle);
     }
 };
 
