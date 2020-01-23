@@ -14,4 +14,4 @@ clean:
 	rm ./game;
 
 run:
-	./game;
+	./game
