@@ -8,6 +8,7 @@
 #include "./Components/ColliderComponent.h"
 #include "./Components/KeyboardControlComponent.h"
 #include "./Components/TextLabelComponent.h"
+#include "./Components/ProjectileEmitterComponent.h"
 #include "../lib/glm/glm.hpp"
 
 EntityManager manager;
@@ -71,6 +72,7 @@ void Game::LoadLevel(int levelNumber) {
     assetManager->AddTexture("radar-image", std::string("./assets/images/radar.png").c_str());
     assetManager->AddTexture("jungle-tiletexture", std::string("./assets/tilemaps/jungle.png").c_str());
     assetManager->AddTexture("heliport-image", std::string("./assets/images/heliport.png").c_str());
+    assetManager->AddTexture("projectile-image", std::string("assets/images/bullet-enemy.png").c_str());
     assetManager->AddFont("charriot-font", std::string("./assets/fonts/charriot.ttf").c_str(), 14);
 
     map = new Map("jungle-tiletexture", 2, 32);
@@ -96,8 +98,11 @@ void Game::LoadLevel(int levelNumber) {
     radarEntity.AddComponent<TransformComponent>(720, 15, 0, 0, 64, 64, 1);
     radarEntity.AddComponent<SpriteComponent>("radar-image", 8, 150, false, true);
 
-    //Entity& labelLevelName(manager.AddEntity("LabelLevelName", UI_LAYER));
-    //labelLevelName.AddComponent<TextLabelComponent>(10, 10, "First Level...", "charriot-font", WHITE_COLOR);
+    Entity& projectile(manager.AddEntity("projectile", PROJECTILE_LAYER));
+    projectile.AddComponent<TransformComponent>(150 + 16, 495+16, 0, 0, 4, 4, 1);
+    projectile.AddComponent<SpriteComponent>("projectile-image");
+    projectile.AddComponent<ColliderComponent>("PROJECTILE", 100+16, 495+16, 4, 4);
+    projectile.AddComponent<ProjectileEmitterComponent>(50, 270, 200, true);
 }
 
 void Game::ProcessInput() {
@@ -165,6 +170,10 @@ void Game::HandleCameraMovement() {
 void Game::CheckCollisions() {
     CollisionType collisionType = manager.CheckCollisions();
     if (collisionType == PLAYER_ENEMY_COLLISION) {
+        ProcessGameOver();
+    }
+    if(collisionType == PLAYER_PROJECTILE_COLLISION)
+    {
         ProcessGameOver();
     }
     if (collisionType == PLAYER_LEVEL_COMPLETE_COLLISION) {
