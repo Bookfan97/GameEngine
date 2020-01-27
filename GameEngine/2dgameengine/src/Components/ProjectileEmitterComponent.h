@@ -13,6 +13,7 @@ class ProjectileEmitterComponent: public Component {
         int range;
         float angleRad;
         bool shouldLoop;
+
     public:
         ProjectileEmitterComponent(int speed, int angleDeg, int range, bool shouldLoop) {
             this->speed = speed;
@@ -24,23 +25,19 @@ class ProjectileEmitterComponent: public Component {
         void Initialize() override {
             transform = owner->GetComponent<TransformComponent>();
             origin = glm::vec2(transform->position.x, transform->position.y);
-            transform->velocity = glm::vec2(glm::cos(angleRad) * speed, glm::sin(angleRad) * speed);
+            transform->velocity = glm::vec2(glm::cos(angleRad) * speed, glm::sin(angleRad) * speed); 
         }
 
         void Update(float deltaTime) override {
-            if(glm::distance(transform->position, origin)>range)
-            {
-                if(shouldLoop)
-                {
+            if (glm::distance(transform->position, origin) > range) {
+                if (shouldLoop) {
                     transform->position.x = origin.x;
                     transform->position.y = origin.y;
-                }
-                else
-                {
+                } else {
                     owner->Destroy();
                 }
-                
-            }
+            } 
         }
 };
+
 #endif

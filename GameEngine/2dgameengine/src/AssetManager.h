@@ -17,8 +17,10 @@ class AssetManager {
         AssetManager(EntityManager* manager);
         ~AssetManager();
         void ClearData();
+        
         void AddTexture(std::string textureId, const char* filePath);
         void AddFont(std::string fontId, const char* filePath, int fontSize);        
+
         SDL_Texture* GetTexture(std::string textureId);
         TTF_Font* GetFont(std::string fontId);
 };
