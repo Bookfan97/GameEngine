@@ -6,6 +6,8 @@ AssetManager::AssetManager(EntityManager* manager): manager(manager) {
 }
 
 void AssetManager::ClearData() {
+    for (auto const& [textureId, texture]: textures)
+        SDL_DestroyTexture(texture);
     textures.clear();
     fonts.clear();
 }
